@@ -1,0 +1,16 @@
+{
+  "name": "ow-killfeed",
+  "version": "1.0.0",
+  "description": "Generates a text file from the killfeed of an Overwatch VOD",
+  "main": "killfeed.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Cole Christini",
+  "license": "ISC",
+  "dependencies": {
+    "ffbinaries": "^1.1.4",
+    "ffmpeg-extract-frames": "^2.0.2",
+    "opencv4nodejs": "^5.4.0"
+  }
+}
