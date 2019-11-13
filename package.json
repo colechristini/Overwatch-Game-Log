@@ -11,6 +11,7 @@
   "dependencies": {
     "ffbinaries": "^1.1.4",
     "ffmpeg-extract-frames": "^2.0.2",
+    "memfs": "^2.16.1",
     "opencv4nodejs": "^5.4.0"
   }
 }
