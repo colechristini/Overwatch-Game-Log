@@ -15,7 +15,20 @@ const cropKillfeedDimensions = [];
 const cropUltsSpectator = 160;
 const killArrows = [await cv.imreadAsync('./resources/normal.png'), await cv.imreadAsync('./resources/ult.png')];
 const colors = [FFFFFF, FE0A24];
-
+const heroIcons=[];
+const heroes = ['DVa', 'Orisa', 'Roadhog', 'Hammond',
+  'Ashe', 'Bastion', 'Doomfist', 'Genji', 'Hanzo', 'McCree',
+  'Mei', 'Reaper', 'Soldier: 76', 'Sombra', 'Torbjorn',
+  'Tracer', 'Widowmaker', 'Baptiste', 'Lucio', 'Mercy',
+  'Zenyatta', 'Reinhardt', 'Sigma', 'Winston', 'Zarya',
+  'Junkrat', 'Pharah', 'Symmetra', 'Ana', 'Brigitte', 'Moira'];
+const killingUlts = ['Roadhog', 'Hanzo', 'DVa', 'Hammond',
+  'Ashe', 'Bastion', 'Doomfist', 'Genji', 'McCree',
+  'Mei', 'Reaper', 'Soldier: 76', 'Torbjorn',
+  'Tracer', 'Reinhardt', 'Sigma', 'Winston', 'Zarya',
+  'Junkrat', 'Pharah', 'Moira'];
+const canHeadshotNormal = 21;
+const canHeadshotUlt=2;
 function extractframes(path) {
   ffmpeg.ffprobe(videoFile, (error, metadata) => {
     duration = metadata.format.duration;
@@ -111,7 +124,7 @@ async function checkKillfeedArrows(framenumber) {
         }
       });
     });
-    frameText[i]=await runOCR(killfeedFrames,point, isHeadshot, isUlt);
+    frameText[i] = await runOCR(killfeedFrames, point, isHeadshot, isUlt);
   }
 }
 async function runOCR(frame, splitPoint, isHeadshot, isUlt) {
@@ -126,7 +139,7 @@ async function runOCR(frame, splitPoint, isHeadshot, isUlt) {
         'eng',
         { logger: m => console.log(m) }
       ).then(({ data: { text } }) => {
-        basicText = text + '[headshot:'+isHeadshot+'][ult:'+isUlt+']->';
+        basicText = text + '[headshot:' + isHeadshot + '][ult:' + isUlt + ']->';
       });
       Tesseract.recognize(
         victim,
@@ -136,28 +149,28 @@ async function runOCR(frame, splitPoint, isHeadshot, isUlt) {
         basicText += text;
       });
     });
-    return basicText;
+  return basicText;
 }
-async function getHeroes(frame, splitPoint, isHeadshot, isUlt){
+async function getHeroes(frame, splitPoint, isHeadshot, isUlt) {
   Jimp.read(frame)
-  .then(image => {
-    var victim = image.clone();
-    image.crop(0, 0, splitPoint[0], image.bitmap.height);
-    victim.crop(0, splitPoint[0], image.bitmap.width - splitPoint[0], image.bitmap.height);
-    Tesseract.recognize(
-      image,
-      'eng',
-      { logger: m => console.log(m) }
-    ).then(({ data: { text } }) => {
-      basicText = text + '[headshot:'+isHeadshot+'][ult:'+isUlt+']->';
+    .then(image => {
+      var victim = image.clone();
+      image.crop(0, 0, splitPoint[0], image.bitmap.height);
+      victim.crop(0, splitPoint[0], image.bitmap.width - splitPoint[0], image.bitmap.height);
+      Tesseract.recognize(
+        image,
+        'eng',
+        { logger: m => console.log(m) }
+      ).then(({ data: { text } }) => {
+        basicText = text + '[headshot:' + isHeadshot + '][ult:' + isUlt + ']->';
+      });
+      Tesseract.recognize(
+        victim,
+        'eng',
+        { logger: m => console.log(m) }
+      ).then(({ data: { text } }) => {
+        basicText += text;
+      });
     });
-    Tesseract.recognize(
-      victim,
-      'eng',
-      { logger: m => console.log(m) }
-    ).then(({ data: { text } }) => {
-      basicText += text;
-    });
-  });
   return basicText;
 }
