@@ -13,6 +13,7 @@
     "fluent-ffmpeg": "^2.1.2",
     "jimp": "^0.8.5",
     "memfs": "^2.16.1",
+    "node-cache": "^5.0.2",
     "opencv4nodejs": "^5.4.0",
     "tesseract.js": "^2.0.0-beta.2"
   }

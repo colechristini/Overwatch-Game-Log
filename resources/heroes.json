@@ -1,0 +1,460 @@
+{
+    "heroes": [
+        {
+            "name": "D.Va",
+            "canHeadshot": true,
+            "canUlt": true,
+            "icon": "dva.png",
+            "abilities": {
+                "Ability 1": {
+                    "name": "Micromissiles",
+                    "icon": "missiles.png"
+                },
+                "Ultimate": {
+                    "name": "Self Destruct",
+                    "icon": "bomb.png"
+                }
+            }
+        },
+        {
+            "name": "Orisa",
+            "canHeadshot": true,
+            "canUlt": false,
+            "icon": "orisa.png",
+            "abilities": {
+                "Ability 1": {
+                    "name": "Halt!",
+                    "icon": "halt.png"
+                }
+            }
+        },
+        {
+            "name": "Wrecking Ball",
+            "canHeadshot": true,
+            "canUlt": true,
+            "icon": "ball.png",
+            "abilities": {
+                "Ability 1": {
+                    "name": "Grappling Hook",
+                    "icon": "grapple.png"
+                },
+                "Ability 2": {
+                    "name": "Piledrive",
+                    "icon": "slam.png"
+                },
+                "Ultimate": {
+                    "name": "Minefield",
+                    "icon": "mines.png"
+                }
+            }
+        },
+        {
+            "name": "Roadhog",
+            "canHeadshot": true,
+            "canUlt": true,
+            "icon": "hog.png",
+            "abilities": {
+                "Ability 1": {
+                    "name": "Hook",
+                    "icon": "hook.png"
+                },
+                "Ultimate": {
+                    "name": "Whole Hog",
+                    "icon": "wholehog.png"
+                }
+            }
+        },
+        {
+            "name": "Ashe",
+            "canHeadshot": true,
+            "canUlt": true,
+            "icon": "ashe.png",
+            "abilities": {
+                "Ability 1": {
+                    "name": "Coach Gun",
+                    "icon": "coach.png"
+                },
+                "Ability 2": {
+                    "name": "Dynamite",
+                    "icon": "dynamite.png"
+                },
+                "Ultimate": {
+                    "name": "B.O.B",
+                    "icon": "bob.png"
+                }
+            }
+        },
+        {
+            "name": "Bastion",
+            "canHeadshot": true,
+            "canUlt": true,
+            "icon": "bastion.png",
+            "abilities": {
+                "Ultimate": {
+                    "name": "Configuration: Tank",
+                    "icon": "tank.png"
+                }
+            }
+        },
+        {
+            "name": "Doomfist",
+            "canHeadshot": true,
+            "canUlt": true,
+            "icon": "doom.png",
+            "abilities": {
+                "Ability 1": {
+                    "name": "Seismic Slam",
+                    "icon": "seismic.png"
+                },
+                "Ability 2": {
+                    "name": "Rising Uppercut",
+                    "icon": "uppercut.png"
+                },
+                "Ability 3": {
+                    "name": "Rocket Punch",
+                    "icon": "punch.png"
+                },
+                "Ultimate": {
+                    "name": "Meteor Strike",
+                    "icon": "meteor.png"
+                }
+            }
+        },
+        {
+            "name": "Genji",
+            "canHeadshot": true,
+            "canUlt": true,
+            "icon": "genji.png",
+            "abilities": {
+                "Ability 1": {
+                    "name": "Swift Strike(Dash)",
+                    "icon": "dash.png"
+                },
+                "Ultimate": {
+                    "name": "Dragonblade",
+                    "icon": "blade.png"
+                }
+            }
+        },
+        {
+            "name": "Hanzo",
+            "canHeadshot": true,
+            "canUlt": true,
+            "icon": "hanzo.png",
+            "abilities": {
+                "Ability 1": {
+                    "name": "Storm Arrows",
+                    "icon": "stormarrows.png"
+                },
+                "Ability 2": {
+                    "name": "Sonic Arrow",
+                    "icon": "sonic.png"
+                },
+                "Ultimate": {
+                    "name": "Dragon Strike",
+                    "icon": "dragons.png"
+                }
+            }
+        },
+        {
+            "name": "McCree",
+            "canHeadshot": true,
+            "canUlt": true,
+            "icon": "mccree.png",
+            "abilities": {
+                "Ability 1": {
+                    "name": "Flashbang",
+                    "icon": "flash.png"
+                },
+                "Ultimate": {
+                    "name": "High Noon",
+                    "icon": "highnoon.png"
+                }
+            }
+        },
+        {
+            "name": "Mei",
+            "canHeadshot": true,
+            "canUlt": true,
+            "icon": "mei.png",
+            "abilities": {
+                "Ultimate": {
+                    "name": "Blizzard",
+                    "icon": "blizzard.png"
+                }
+            }
+        },
+        {
+            "name": "Reaper",
+            "canHeadshot": true,
+            "canUlt": true,
+            "icon": "reaper.png",
+            "abilities": {
+                "Ultimate": {
+                    "name": "Death Blossom",
+                    "icon": "blossom.png"
+                }
+            }
+        },
+        {
+            "name": "Soldier: 76",
+            "canHeadshot": true,
+            "canUlt": true,
+            "icon": "soldier.png",
+            "abilities": {
+                "Ability 1": {
+                    "name": "Helix Rockets",
+                    "icon": "helix.png"
+                },
+                "Ultimate": {
+                    "name": "Tactical Visor",
+                    "icon": "visor.png"
+                }
+            }
+        },
+        {
+            "name": "Sombra",
+            "canHeadshot": true,
+            "canUlt": false,
+            "icon": "sombra.png",
+            "abilities": {}
+        },
+        {
+            "name": "Torbjorn",
+            "canHeadshot": true,
+            "canUlt": true,
+            "icon": "torb.png",
+            "abilities": {
+                "Ability 1": {
+                    "name": "Hammer",
+                    "icon": "hammer.png"
+                },
+                "Ability 2": {
+                    "name": "Turret",
+                    "icon": "turret.png"
+                },
+                "Ultimate": {
+                    "name": "Molten Core",
+                    "icon": "lava.png"
+                }
+            }
+        },
+        {
+            "name": "Tracer",
+            "canHeadshot": true,
+            "canUlt": true,
+            "icon": "tracer.png",
+            "abilities": {
+                "Ultimate": {
+                    "name": "Pulse Bomb",
+                    "icon": "pulse.png"
+                }
+            }
+        },
+        {
+            "name": "Widowmaker",
+            "canHeadshot": true,
+            "canUlt": false,
+            "icon": "widow.png",
+            "abilities": {
+                "Ability 1": {
+                    "name": "Venom Mine",
+                    "icon": "mine.png"
+                }
+            }
+        },
+        {
+            "name": "Baptise",
+            "canHeadshot": true,
+            "canUlt": false,
+            "icon": "bap.png"
+        },
+        {
+            "name": "Mercy",
+            "canHeadshot": true,
+            "canUlt": false,
+            "icon": "mercy.png",
+            "abilities": {
+                "Ability 1": {
+                    "name": "Resurrect",
+                    "icon": "res.png"
+                }
+            }
+        },
+        {
+            "name": "Lucio",
+            "canHeadshot": true,
+            "canUlt": false,
+            "icon": "lucio.png",
+            "abilities": {
+                "Ability 1": {
+                    "name": "Soundwave",
+                    "icon": "boop.png"
+                }
+            }
+        },
+        {
+            "name": "Zenyatta",
+            "canHeadshot": true,
+            "canUlt": false,
+            "icon": "zen.png",
+            "abilities": {}
+        },
+        {
+            "name": "Reinhardt",
+            "canHeadshot": false,
+            "canUlt": true,
+            "icon": "rein.png",
+            "abilities": {
+                "Ability 1": {
+                    "name": "Firestrike",
+                    "icon": "firestrike.png"
+                },
+                "Ability 2": {
+                    "name": "Charge",
+                    "icon": "charge.png"
+                },
+                "Ultimate": {
+                    "name": "Earthshatter",
+                    "icon": "shatter.png"
+                }
+            }
+        },
+        {
+            "name": "Sigma",
+            "canHeadshot": false,
+            "canUlt": true,
+            "icon": "sigma.png",
+            "abilities": {
+                "Ability 1": {
+                    "name": "Accretion",
+                    "icon": "rock.png"
+                },
+                "Ultimate": {
+                    "name": "Gravitic Flux",
+                    "icon": "melody.png"
+                }
+            }
+        },
+        {
+            "name": "Winston",
+            "canHeadshot": false,
+            "canUlt": true,
+            "icon": "monkey.png",
+            "abilities": {
+                "Ability 1": {
+                    "name": "Jump Pack",
+                    "icon": "leap.png"
+                },
+                "Ultimate": {
+                    "name": "Primal Rage",
+                    "icon": "primal.png"
+                }
+            }
+        },
+        {
+            "name": "Zarya",
+            "canHeadshot": false,
+            "canUlt": true,
+            "icon": "rein.png",
+            "abilities": {
+                "Ultimate": {
+                    "name": "Graviton Surge",
+                    "icon": "grav.png"
+                }
+            }
+        },
+        {
+            "name": "Junkrat",
+            "canHeadshot": false,
+            "canUlt": true,
+            "icon": "junk.png",
+            "abilities": {
+                "Ability 1": {
+                    "name": "Concussion Mine",
+                    "icon": "mine.png"
+                },
+                "Ultimate": {
+                    "name": "Riptire",
+                    "icon": "tire.png"
+                }
+            }
+        },
+        {
+            "name": "Pharah",
+            "canHeadshot": false,
+            "canUlt": true,
+            "icon": "pharah.png",
+            "abilities": {
+                "Ability 1": {
+                    "name": "Concussion Rocket",
+                    "icon": "conc.png"
+                },
+                "Ultimate": {
+                    "name": "Rocket Barrage",
+                    "icon": "barrage.png"
+                }
+            }
+        },
+        {
+            "name": "Symmetra",
+            "canHeadshot": false,
+            "canUlt": false,
+            "icon": "symm.png",
+            "abilities": {
+                "Ability 1": {
+                    "name": "Sentry Turret",
+                    "icon": "turret.png"
+                }
+            }
+        },
+        {
+            "name": "Ana",
+            "canHeadshot": false,
+            "canUlt": false,
+            "icon": "ana.png",
+            "abilities": {
+                "Ability 1": {
+                    "name": "Biotic Grenade",
+                    "icon": "grenade.png"
+                },
+                "Ability 2": {
+                    "name": "Sleep Dart",
+                    "icon": "sleep.png"
+                }
+            }
+        },
+        {
+            "name": "Brigitte",
+            "canHeadshot": false,
+            "canUlt": false,
+            "icon": "brig.png",
+            "abilities": {
+                "Ability 1": {
+                    "name": "Whipshot",
+                    "icon": "whipshot.png"
+                },
+                "Ability 2": {
+                    "name": "Shield Bash",
+                    "icon": "bash.png"
+                }
+            }
+        },
+        {
+            "name": "Moira",
+            "canHeadshot": false,
+            "canUlt": false,
+            "icon": "moira.png",
+            "abilities": {
+                "Ability 1": {
+                    "name": "Biotic Orb",
+                    "icon": "orb.png"
+                },
+                "Ultimate": {
+                    "name": "Coalescence",
+                    "icon": "coalescense.png"
+                }
+            }
+        }
+    ]
+}
