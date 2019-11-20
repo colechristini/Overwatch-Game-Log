@@ -9,7 +9,7 @@ const NodeCache = require("node-cache");
 const myArgs = process.argv.slice(2);
 const duration;
 const vol = new Volume();
-var frames = [];
+var frameData = [];
 const cropKillfeedPOV = [];
 const cropKillfeedSpectator = [];
 const cropKillfeedDimensions = [];
@@ -17,20 +17,10 @@ const cropUltsSpectator = 160;
 const killArrows = [await cv.imreadAsync('./resources/arrows/normal.png'), await cv.imreadAsync('./resources/arrows/ult.png')];
 const colors = [FFFFFF, 0x240AFE];
 const heroIcons = [];
-const heroes = ['DVa', 'Orisa', 'Roadhog', 'Hammond',       //hero list, organized by role, broken into 2 blocks, heroes who can headshot first, can't second
-  'Ashe', 'Bastion', 'Doomfist', 'Genji', 'Hanzo', 'McCree',
-  'Mei', 'Reaper', 'Soldier: 76', 'Sombra', 'Torbjorn',
-  'Tracer', 'Widowmaker', 'Baptiste', 'Lucio', 'Mercy',
-  'Zenyatta', 'Reinhardt', 'Sigma', 'Winston', 'Zarya',
-  'Junkrat', 'Pharah', 'Symmetra', 'Ana', 'Brigitte', 'Moira'];
-const killingUlts = ['Roadhog', 'Hanzo', 'DVa', 'Hammond',  //heroes who's ults can kill
-  'Ashe', 'Bastion', 'Doomfist', 'Genji', 'McCree',
-  'Mei', 'Reaper', 'Soldier: 76', 'Torbjorn',
-  'Tracer', 'Reinhardt', 'Sigma', 'Winston', 'Zarya',
-  'Junkrat', 'Pharah', 'Moira'];
+var heroes = JSON.parse(fs.readFileSync('./heroes.json', 'utf8'));
 const canHeadshotNormal = 21;
 const canHeadshotUlt = 2;
-const killCache = new NodeCache(stdTTL = 15, useClones = false);
+var killCache = new NodeCache(stdTTL = 15, useClones = false);
 function extractframes(path) {
   ffmpeg.ffprobe(videoFile, (error, metadata) => {
     duration = metadata.format.duration;
@@ -132,10 +122,16 @@ async function checkKillfeedArrows(framenumber) {
       });
     });
     frameText[index] = await runOCR(killfeedFrames[i], point, isHeadshot, isUlt);
-    var heroesInKill = await getHeroes(killfeedFrames[i], point, isHeadshot, isUlt);
-    frameText[index].replace('[', heroesInKill[0] + '[');
-    frameText[index] += heroesInKill[1];
-    var ability = await getAbilities(heroesInKill[0], killfeedFrames[i], isUlt);
+    if(killCache.get(frameText[index])==null){
+      killcache.set(frameText[index],0x00);
+      var heroesInKill = await getHeroes(killfeedFrames[i], point, isHeadshot, isUlt);
+      frameText[index].replace('[', heroesInKill[0] + '[');
+      frameText[index] += heroesInKill[1];
+      var ability = await getAbilities(heroesInKill[0], killfeedFrames[i], isUlt);
+    }
+    else{
+      continue;
+    }
   }
 }
 async function runOCR(frame, splitPoint, isHeadshot, isUlt) {
@@ -174,46 +170,35 @@ async function getHeroes(frame, splitPoint, isHeadshot, isUlt) {
       var promiseRight = victim.getBufferAsync(Jimp.MIME_PNG);
       promiseLeft.then(function (result) {
         const imageMatrix = new cv.Mat(result, 1080, 1920, cv.CV_8UC3);
-        if (isUlt) {
-          if (isHeadshot) {
-            for (let index = 0; index < canHeadshotUlt; index++) {
-              const matched = imageMatrix.matchTemplate(heroIconsUlts[index], 5);
-              const point = matched.minMaxLoc();
-              if (point[1] > 0.8) {
-                basicText = '[' + killingUlts[index] + ']->';
-                break;
-              }
-            }
-          }
-          else {
-            for (let index = 0; index < killingUlts.length; index++) {
-              const matched = imageMatrix.matchTemplate(heroIconsUlts[index], 5);
-              const point = matched.minMaxLoc();
-              if (point[1] > 0.8) {
-                basicText = '[' + killingUlts[index] + ']->';
-                break;
-              }
-            }
-          }
-        }
-        else {
           if (isHeadshot) {
             for (let index = 0; index < canHeadshotNormal; index++) {
-              const matched = imageMatrix.matchTemplate(heroIcons[index], 5);
-              const point = matched.minMaxLoc();
-              if (point[1] > 0.8) {
-                basicText = '[' + heroes[index] + ']->';
-                break;
+              if(isUlt&&heroes[index].canUlt||!isUlt){
+                const matched = imageMatrix.matchTemplate(await cv.imreadAsync('./resources/'+heroes[index].name+'/'+heroes[infe].icon), 5);
+                const point = matched.minMaxLoc();
+                if (point[1] > 0.8) {
+                  basicText = '[' + heroes[index].name + ']->';
+                  break;
+                  }
+                }
+              else if(isUlt&&!heroes[index].canUlt){
+                continue;
+                }
               }
             }
           }
           else {
-            for (let index = 0; index < heroes.length; index++) {
-              const matched = imageMatrix.matchTemplate(heroIcons[index], 5);
-              const point = matched.minMaxLoc();
-              if (point[1] > 0.8) {
-                basicText[0] = '[' + heroes[index] + ']';
-                break;
+             for (let index = 0; index < canHeadshotNormal; index++) {
+              if(isUlt&&heroes[index].canUlt||!isUlt){
+                const matched = imageMatrix.matchTemplate(await cv.imreadAsync('./resources/'+heroes[index].name+'/'+heroes[infe].icon), 5);
+                const point = matched.minMaxLoc();
+                if (point[1] > 0.8) {
+                  basicText = '[' + heroes[index].name + ']->';
+                  break;
+                  }
+                }
+              else if(isUlt&&!heroes[index].canUlt){
+                continue;
+                }
               }
             }
           }
