@@ -9,34 +9,35 @@ const NodeCache = require("node-cache");
 const myArgs = process.argv.slice(2);
 const duration;
 const vol = new Volume();
-var frameData = [];
+var frameData = new String[];
 const cropKillfeedPOV = [];
 const cropKillfeedSpectator = [];
 const cropKillfeedDimensions = [];
 const cropUltsSpectator = 160;
 const killArrows = [await cv.imreadAsync("./resources/arrows/normal.png"), await cv.imreadAsync("./resources/arrows/ult.png")];
-const colors = [FFFFFF, 0x240AFE];
-const heroIcons = [];
+const colors = [0xFFFFFF, 0x240AFE];
 var heroes = JSON.parse(fs.readFileSync("./heroes.json", "utf8"));
 const canHeadshotNormal = 21;
 const canHeadshotUlt = 2;
 var killCache = new NodeCache(stdTTL = 15, useClones = false);
-function extractframes(path) {
-  ffmpeg.ffprobe(videoFile, (error, metadata) => {
+
+await extractFrames();
+var file = fs.createWriteStream(myArgs[1]);
+file.on('error', function(err) { /* error handling */ });
+frameData.forEach(function(data) { file.write( data + '\n'); });
+file.end();
+
+async function extractframes() {
+  ffmpeg.ffprobe(myArgs[0], (error, metadata) => {
     duration = metadata.format.duration;
   });
   vol.mkdir("./frames");
-  for (let index = 0; index < array.length; index++) {
-    cv.imreadAsync("./resources/" + element + "/" + element + "_icon.png", (err, mat) => {
-      heroIcons[index] = mat;
-    })
-  }
-
-
-
-  await extractFrames({
-
-  })
+  for(let index=0; index<duration*10; index++){
+      frameText=await extractFrame(myArgs[0],index);
+      for(let frameEntry=0; frameEntry<frameText.length; frameEntry++){
+          frameData[index+frameEntry]="["+Math.floor(index/600)+":"+(index/600)%60+"]"+frameText[frameEntry];//generate timestamp from framenumber and insert into array
+      }
+   }
 }
 async function extractFrame(path, framenumber) {
   var ffstream = ffmpeg(path)
@@ -54,7 +55,8 @@ async function extractFrame(path, framenumber) {
     var frame = Buffer.concat(array);
   });
 
-  cropFrame(myArgs[0], frame, framenumber).then(checkKillfeedArrows(framenumber));
+  var frameText = await cropFrame(myArgs[2], frame, framenumber).then(checkKillfeedArrows(framenumber));
+  return frameText;
 }
 
 async function cropFrame(isSpectator, buffer, framenumber) {
@@ -133,6 +135,7 @@ async function checkKillfeedArrows(framenumber) {
       continue;
     }
   }
+  return frameText;
 }
 async function runOCR(frame, splitPoint, isHeadshot, isUlt) {
   var basicText;
