@@ -181,12 +181,12 @@ async function getHeroes(frame, splitPoint, isHeadshot, isUlt) {
                   maskMat = await cv.imreadAsync("./resources/" + heroes[index].name + "/mask_" + heroes[index].icon);
                   heroes[index].fileLoaded = true;
                   heroes[index].icon = templateMat;
-                  heroes[index].mask=maskMat;
+                  heroes[index].mask = maskMat;
                 }
                 else {
                   var templateMat = heroes[index].icon;
                 }
-                const matched = imageMatrix.matchTemplate(templateMat, 5, mask=maskMat);
+                const matched = imageMatrix.matchTemplate(templateMat, 5, mask = maskMat);
                 const point = matched.minMaxLoc();
                 if (point[1] > 0.8) {
                   basicText = "[" + heroes[index].name + "]->";
@@ -212,15 +212,16 @@ async function getHeroes(frame, splitPoint, isHeadshot, isUlt) {
                 maskMat = await cv.imreadAsync("./resources/" + heroes[index].name + "/mask_" + heroes[index].icon);
                 heroes[index].fileLoaded = true;
                 heroes[index].icon = templateMat;
-                heroes[index].mask=maskMat;
+                heroes[index].mask = maskMat;
               }
               else {
-                var templateMat = heroes[index].icon;
+                templateMat = heroes[index].icon;
+                maskMat = heroes[index].mask;
               }
-              const matched = imageMatrix.matchTemplate(templateMat, 5, mask=maskMat);
+              const matched = imageMatrix.matchTemplate(templateMat, 5, mask = maskMat);
               const point = matched.minMaxLoc();
               if (point[1] > 0.8) {
-                basicText +="[" + heroes[index].name +"]";
+                basicText += "[" + heroes[index].name + "]";
                 break;
               }
             }
@@ -232,35 +233,72 @@ async function getHeroes(frame, splitPoint, isHeadshot, isUlt) {
       });
       promiseRight.then(function (result) {
         const imageMatrix = new cv.Mat(result, 1080, 1920, cv.CV_8UC3);
+        var templateMat;
+        var maskMat;
         for (let index = 0; index < heroes.length; index++) {
-          const matched = imageMatrix.matchTemplate(heroIcons[index], 5);
+          if (!heroes[index].fileLoaded) {
+            templateMat = await cv.imreadAsync("./resources/" + heroes[index].name + "/" + heroes[index].icon);
+            maskMat = await cv.imreadAsync("./resources/" + heroes[index].name + "/mask_" + heroes[index].icon);
+            heroes[index].fileLoaded = true;
+            heroes[index].icon = templateMat;
+            heroes[index].mask = maskMat;
+          }
+          else {
+            templateMat = heroes[index].icon;
+            maskMat = heroes[index].mask;
+          }
+          const matched = imageMatrix.matchTemplate(templateMat, 5, mask = maskMat);
           const point = matched.minMaxLoc();
           if (point[1] > 0.8) {
-            basicText[1] = "[" + heroes[index] + "]";
+            basicText += "[" + heroes[index].name + "]->";
             break;
           }
         }
       });
     });
+  var ability = await getAbilities(basicText[0], frame, isUlt);
+  basicText[0] += "[" + ability + "]";
   return basicText;
 }
 async function getAbilities(hero, frame, isUlt) {
+  var basicText = new String;
   Jimp.read(frame)
     .then(image => {
       image.crop(0, 0, splitPoint[0], image.bitmap.height);
       var promise = image.getBufferAsync(Jimp.MIME_PNG);
       promise.then(function (result) {
         const imageMatrix = new cv.Mat(result, 1080, 1920, cv.CV_8UC3);
-        for (let index = 0; index < heroes.length; index++) {
-          const matched = imageMatrix.matchTemplate(heroIcons[index], 5);
-          const point = matched.minMaxLoc();
-          if (point[1] > 0.8) {
-            basicText[1] = "[" + heroes[index] + "]";
-            break;
+        const heroIndex = heroes.findIndex(({ name }) => name === hero);
+        var templateMat;
+        var maskMat;
+        if (isUlt) {
+          basicText = "[" + heroes[heroIndex].abilities.Ultimate.name + "]";
+        }
+        else {
+          for (var ability in heroes[heroIndex].abilities) {
+            if (!heroes[heroIndex].ability.fileLoaded) {
+              templateMat = await cv.imreadAsync("./resources/" + hero + "/" + heroes[heroIndex].abilities[ability].icon);
+              maskMat = await cv.imreadAsync("./resources/" + heroes[index].name + "/mask_" + heroes[heroIndex].abilities[ability].icon);
+              heroes[heroIndex].abilities[ability].fileLoaded = true;
+              heroes[heroIndex].abilities[ability].icon = templateMat;
+              heroes[heroIndex].abilities[ability].mask = maskMat;
+            }
+            else {
+              templateMat = heroes[heroIndex].abilities[ability].icon;
+              maskMat = heroes[heroIndex].abilities[ability].mask;
+            }
+            const matched = imageMatrix.matchTemplate(templateMat, 5, mask = maskMat);
+            const point = matched.minMaxLoc();
+            if (point[1] > 0.8) {
+              basicText = "[" + heroes[heroIndex].abilities[ability].name + "]->";
+              break;
+            }
+            else{
+              continue;
+            }
           }
         }
-      }
-
-      );
+      });
     });
+  return basicText;
 }
