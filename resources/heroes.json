@@ -89,8 +89,8 @@
 				},
 				"Ability 2": {
 					"name": "Dynamite",
-					"icon": "dynamite.png"
-					"fileLoaded": false,
+					"icon": "dynamite.png",
+					"fileLoaded": false
 				},
 				"Ultimate": {
 					"name": "B.O.B",
@@ -315,7 +315,7 @@
 			"name": "Baptise",
 			"canHeadshot": true,
 			"canUlt": false,
-			"icon": "bap.png"
+			"icon": "bap.png",
 			"fileLoaded": false,
 			"abilities": {}
 		},
@@ -328,8 +328,8 @@
 			"abilities": {
 				"Ability 1": {
 					"name": "Resurrect",
-					"icon": "res.png"
-					"fileLoaded": false,
+					"icon": "res.png",
+					"fileLoaded": false
 				}
 			}
 		},
@@ -342,8 +342,8 @@
 			"abilities": {
 				"Ability 1": {
 					"name": "Soundwave",
-					"icon": "boop.png"
-					"fileLoaded": false,
+					"icon": "boop.png",
+					"fileLoaded": false
 				}
 			}
 		},
@@ -364,18 +364,18 @@
 			"abilities": {
 				"Ability 1": {
 					"name": "Firestrike",
-					"icon": "firestrike.png"
-					"fileLoaded": false,
+					"icon": "firestrike.png",
+					"fileLoaded": false
 				},
 				"Ability 2": {
 					"name": "Charge",
-					"icon": "charge.png"
-					"fileLoaded": false,
+					"icon": "charge.png",
+					"fileLoaded": false
 				},
 				"Ultimate": {
 					"name": "Earthshatter",
-					"icon": "shatter.png"
-					"fileLoaded": false,
+					"icon": "shatter.png",
+					"fileLoaded": false
 				}
 			}
 		},
@@ -388,13 +388,13 @@
 			"abilities": {
 				"Ability 1": {
 					"name": "Accretion",
-					"icon": "rock.png"
-					"fileLoaded": false,
+					"icon": "rock.png",
+					"fileLoaded": false
 				},
 				"Ultimate": {
 					"name": "Gravitic Flux",
-					"icon": "melody.png"
-					"fileLoaded": false,
+					"icon": "melody.png",
+					"fileLoaded": false
 				}
 			}
 		},
@@ -407,13 +407,13 @@
 			"abilities": {
 				"Ability 1": {
 					"name": "Jump Pack",
-					"icon": "leap.png"
-					"fileLoaded": false,
+					"icon": "leap.png",
+					"fileLoaded": false
 				},
 				"Ultimate": {
 					"name": "Primal Rage",
-					"icon": "primal.png"
-					"fileLoaded": false,
+					"icon": "primal.png",
+					"fileLoaded": false
 				}
 			}
 		},
@@ -426,8 +426,8 @@
 			"abilities": {
 				"Ultimate": {
 					"name": "Graviton Surge",
-					"icon": "grav.png"
-					"fileLoaded": false,
+					"icon": "grav.png",
+					"fileLoaded": false
 				}
 			}
 		},
@@ -440,13 +440,13 @@
 			"abilities": {
 				"Ability 1": {
 					"name": "Concussion Mine",
-					"icon": "mine.png"
-					"fileLoaded": false,
+					"icon": "mine.png",
+					"fileLoaded": false
 				},
 				"Ultimate": {
 					"name": "Riptire",
-					"icon": "tire.png"
-					"fileLoaded": false,
+					"icon": "tire.png",
+					"fileLoaded": false
 				}
 			}
 		},
@@ -459,13 +459,13 @@
 			"abilities": {
 				"Ability 1": {
 					"name": "Concussion Rocket",
-					"icon": "conc.png"
-					"fileLoaded": false,
+					"icon": "conc.png",
+					"fileLoaded": false
 				},
 				"Ultimate": {
 					"name": "Rocket Barrage",
-					"icon": "barrage.png"
-					"fileLoaded": false,
+					"icon": "barrage.png",
+					"fileLoaded": false
 				}
 			}
 		},
@@ -478,8 +478,8 @@
 			"abilities": {
 				"Ability 1": {
 					"name": "Sentry Turret",
-					"icon": "turret.png"
-					"fileLoaded": false,
+					"icon": "turret.png",
+					"fileLoaded": false
 				}
 			}
 		},
@@ -492,13 +492,13 @@
 			"abilities": {
 				"Ability 1": {
 					"name": "Biotic Grenade",
-					"icon": "grenade.png"
-					"fileLoaded": false,
+					"icon": "grenade.png",
+					"fileLoaded": false
 				},
 				"Ability 2": {
 					"name": "Sleep Dart",
-					"icon": "sleep.png"
-					"fileLoaded": false,
+					"icon": "sleep.png",
+					"fileLoaded": false
 				}
 			}
 		},
@@ -511,13 +511,13 @@
 			"abilities": {
 				"Ability 1": {
 					"name": "Whipshot",
-					"icon": "whipshot.png"
-					"fileLoaded": false,
+					"icon": "whipshot.png",
+					"fileLoaded": false
 				},
 				"Ability 2": {
 					"name": "Shield Bash",
-					"icon": "bash.png"
-					"fileLoaded": false,
+					"icon": "bash.png",
+					"fileLoaded": false
 				}
 			}
 		},
@@ -530,13 +530,13 @@
 			"abilities": {
 				"Ability 1": {
 					"name": "Biotic Orb",
-					"icon": "orb.png"
-					"fileLoaded": false,
+					"icon": "orb.png",
+					"fileLoaded": false
 				},
 				"Ultimate": {
 					"name": "Coalescence",
-					"icon": "coalescense.png"
-					"fileLoaded": false,
+					"icon": "coalescense.png",
+					"fileLoaded": false
 				}
 			}
 		}

@@ -8,7 +8,7 @@
   },
    "pkg": {
     "assets": "resources/**/*"
-  }
+  },
   "author": "Cole Christini",
   "license": "ISC",
   "dependencies": {
