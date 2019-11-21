@@ -4,7 +4,7 @@
   "description": "Generates a text file from the killfeed of an Overwatch VOD",
   "main": "killfeed.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "./test/test.js"
   },
    "pkg": {
     "assets": "resources/**/*"
