@@ -15,7 +15,9 @@ const cropKillfeedSpectator = [];
 const cropKillfeedDimensions = [];
 const cropUltsSpectator = 160;
 const killArrows = [await cv.imreadAsync("./resources/arrows/normal.png"), await cv.imreadAsync("./resources/arrows/ult.png")];
-const colors = [FFFFFF, 0x240AFE];
+const arrowColors = [0xFFFFFF, 0x240AFE];
+const iconWidth;
+const teamColors=[];
 var heroes = JSON.parse(fs.readFileSync("./heroes.json", "utf8"));
 const canHeadshotNormal = 21;
 const canHeadshotUlt = 2;
@@ -23,7 +25,7 @@ var killCache = new NodeCache(stdTTL = 15, useClones = false);
 
 await extractFrames();
 var file = fs.createWriteStream(myArgs[1]);
-file.on('error', function(err) { /* error handling */ });
+file.on('error', function(err) { throw err; });
 frameData.forEach(function(data) { file.write( data + '\n'); });
 file.end();
 
@@ -178,7 +180,6 @@ async function getHeroes(frame, splitPoint, isHeadshot, isUlt) {
             if (isUlt && heroes[index].canUlt || !isUlt) {
               var templateMat;
               var maskMat
-              if (isUlt && heroes[index].canUlt || !isUlt) {
                 if (!heroes[index].fileLoaded) {
                   templateMat = await cv.imreadAsync("./resources/" + heroes[index].name + "/" + heroes[index].icon);
                   maskMat = await cv.imreadAsync("./resources/" + heroes[index].name + "/mask_" + heroes[index].icon);
@@ -192,17 +193,19 @@ async function getHeroes(frame, splitPoint, isHeadshot, isUlt) {
                 const matched = imageMatrix.matchTemplate(templateMat, 5, mask = maskMat);
                 const point = matched.minMaxLoc();
                 if (point[1] > 0.8) {
-                  basicText = "[" + heroes[index].name + "]->";
+                  basicText = "[" + heroes[index].name + "]";
+                  if(imageMatrix.at(point[0]+iconWidth+1,point[1])==teamColors[0]){
+                    basicText.replace("]", "][Team 1]->")
+                  }
+                  else if(imageMatrix.at(point[0]+iconWidth+1,point[1])==teamColors[1]){
+                    basicText.replace("]", "][Team 2]->");
+                  }
                   break;
                 }
               }
               else if (isUlt && !heroes[index].canUlt) {
                 continue;
               }
-            }
-            else if (isUlt && !heroes[index].canUlt) {
-              continue;
-            }
           }
         }
         else {
@@ -225,6 +228,12 @@ async function getHeroes(frame, splitPoint, isHeadshot, isUlt) {
               const point = matched.minMaxLoc();
               if (point[1] > 0.8) {
                 basicText += "[" + heroes[index].name + "]";
+                if(imageMatrix.at(point[0]+iconWidth+1,point[1])==teamColors[0]){
+                    basicText += "[Team 1]";
+                  }
+                  else if(imageMatrix.at(point[0]+iconWidth+1,point[1])==teamColors[1]){
+                    basicText += "[Team 2]";
+                  }
                 break;
               }
             }
