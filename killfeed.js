@@ -29,7 +29,7 @@ file.on('error', function (err) { throw err; });
 frameData.forEach(function (data) { file.write(data + '\n'); });
 file.end();
 
-function extractframes() {
+async function extractframes() {
   ffmpeg.ffprobe(myArgs[0], (error, metadata) => {
     duration = metadata.format.duration;
   });
