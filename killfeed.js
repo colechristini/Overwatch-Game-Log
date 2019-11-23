@@ -7,7 +7,7 @@ const Jimp = require("jimp");
 const cv = require("opencv4nodejs");
 const NodeCache = require("node-cache");
 const myArgs = process.argv.slice(2);
-const duration;
+const duration=0;
 const vol = new Volume();
 var frameData = [];
 const cropKillfeedPOV = [1388, 36];
