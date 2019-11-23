@@ -7,7 +7,7 @@ const Jimp = require("jimp");
 const cv = require("opencv4nodejs");
 const NodeCache = require("node-cache");
 const myArgs = process.argv.slice(2);
-const duration=0;
+const duration = 0;
 const vol = new Volume();
 var frameData = [];
 const cropKillfeedPOV = [1388, 36];
@@ -23,13 +23,13 @@ const canHeadshotNormal = 21;
 const canHeadshotUlt = 2;
 var killCache = new NodeCache(stdTTL = 15, useClones = false);
 
-await extractFrames();
+extractFrames();
 var file = fs.createWriteStream(myArgs[1]);
 file.on('error', function (err) { throw err; });
 frameData.forEach(function (data) { file.write(data + '\n'); });
 file.end();
 
-async function extractframes() {
+function extractframes() {
   ffmpeg.ffprobe(myArgs[0], (error, metadata) => {
     duration = metadata.format.duration;
   });
@@ -125,24 +125,24 @@ async function checkKillfeedArrows(framenumber) {
         }
       });
     });
-    var content=[];
+    var content = [];
     content = await runOCR(killfeedFrames[i], point, isHeadshot, isUlt);
-    if (killCache.get(content[0]+"->"+content[1]) == null) {
+    if (killCache.get(content[0] + "->" + content[1]) == null) {
       var heroesInKill = await getHeroes(killfeedFrames[i], point, isHeadshot, isUlt);
       var ability = await getAbilities(heroesInKill[0], killfeedFrames[i], isUlt);
-      if(ability=="Resurrection"){
-        for(key in killCache.keys()){
-          if(key.includes(userNames[1])){
+      if (ability == "Resurrection") {
+        for (key in killCache.keys()) {
+          if (key.includes(userNames[1])) {
             killCache.del(key);
             break;
           }
         }
       }
-      killCache.set(content[0]+"->"+content[1]);
+      killCache.set(content[0] + "->" + content[1]);
       content[0].replace("[", heroesInKill[0] + "[");
       content[1] += heroesInKill[1];
       content[0].replace("]", ability + "]");
-      frameText[index]=content[0]+"->"+content[1];
+      frameText[index] = content[0] + "->" + content[1];
     }
     else {
       continue;
@@ -151,7 +151,7 @@ async function checkKillfeedArrows(framenumber) {
   return frameText;
 }
 async function runOCR(frame, splitPoint, isHeadshot, isUlt) {
-  var basicText=[];
+  var basicText = [];
   Jimp.read(frame)
     .then(image => {
       var victim = image.clone();
