@@ -22,25 +22,27 @@ var heroes = JSON.parse(fs.readFileSync("./heroes.json", "utf8"));
 const canHeadshotNormal = 21;
 const canHeadshotUlt = 2;
 var killCache = new NodeCache(stdTTL = 15, useClones = false);
-
-extractFrames();
-franmeData=[... new Set(frameData];
+var isSpectator;
+frameData=[... new Set(await extractFrames(myArgs[0], myArgs[2]);
 var file = fs.createWriteStream(myArgs[1]);
 file.on('error', function (err) { throw err; });
 frameData.forEach(function (data) { file.write(data + '\n'); });
 file.end();
 
-async function extractframes() {
-  ffmpeg.ffprobe(myArgs[0], (error, metadata) => {
+async function extractframes(path, isSpectatorParam) {
+  var data = [];
+  isSpectator = isSpectatorParam;
+  ffmpeg.ffprobe(path, (error, metadata) => {
     duration = metadata.format.duration;
   });
   vol.mkdir("./frames");
   for (let index = 0; index < duration * 10; index++) {
     frameText = await extractFrame(myArgs[0], index);
     for (let frameEntry = 0; frameEntry < frameText.length; frameEntry++) {
-      frameData[index + frameEntry] = "[" + Math.floor(index / 600) + ":" + (index / 600) % 60 + ":" + index % 10 + "]:" + frameText[frameEntry];//generate timestamp from framenumber and insert into array
+      data[index + frameEntry] = "[" + Math.floor(index / 600) + ":" + (index / 600) % 60 + ":" + index % 10 + "]:" + frameText[frameEntry];//generate timestamp from framenumber and insert into array
     }
   }
+  return data;
 }
 async function extractFrame(path, framenumber) {
   var ffstream = ffmpeg(path)
