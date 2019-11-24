@@ -74,8 +74,8 @@ async function cropFrame(isSpectator, buffer, framenumber) {
   Jimp.read(buffer)
     .then(image => {
       if (isSpectator == true) {
-        var ults = image.clone();
-        ults.crop(0, 0, 1920, cropUltsSpectator)
+        //var ults = image.clone();
+        //ults.crop(0, 0, 1920, cropUltsSpectator)
         var file = "./frames/frame_" + framenumber + "_ults" + image.getExtension();
         var promise = killfeed[i].getBufferAsync(Jimp.MIME_PNG);
         promise.then(function (result) {
