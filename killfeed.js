@@ -38,7 +38,7 @@ async function extractframes() {
   for (let index = 0; index < duration * 10; index++) {
     frameText = await extractFrame(myArgs[0], index);
     for (let frameEntry = 0; frameEntry < frameText.length; frameEntry++) {
-      frameData[index + frameEntry] = "[" + Math.floor(index / 600) + ":" + (index / 600) % 60 + "]:" + frameText[frameEntry];//generate timestamp from framenumber and insert into array
+      frameData[index + frameEntry] = "[" + Math.floor(index / 600) + ":" + (index / 600) % 60 + ":" + index % 10 + "]:" + frameText[frameEntry];//generate timestamp from framenumber and insert into array
     }
   }
 }
