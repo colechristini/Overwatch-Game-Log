@@ -1,0 +1,13 @@
+name: Greetings
+
+on: [pull_request, issues]
+
+jobs:
+  greeting:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/first-interaction@v1
+      with:
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
+        issue-message: 'Hello! If you have a bug report, please post here or in the discord, same for questions. You can also submit feature requests there, to be voted on by the community, and vote on them.'' first issue'
+        pr-message: 'Hello! If you would like to add a feature to the project, please make sure your code is adequately commented and has a unit test. Then you should have a code reviewer assigned(Probably EventHorizon#9538 in discord). If everythng works it will be added, and your name will be on the contributors list(as well as a role in the discord)'' first pr'
