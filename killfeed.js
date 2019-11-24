@@ -1,14 +1,12 @@
-import { Volume } from "memfs";
-import { finished } from "stream";
-import Tesseract from "tesseract.js";
-
+const memfs= require("memfs");
+const Tesseract = require("tesseract.js")
 const ffmpeg = require("fluent-ffmpeg");
 const Jimp = require("jimp");
 const cv = require("opencv4nodejs");
 const NodeCache = require("node-cache");
 const myArgs = process.argv.slice(2);
 const duration = 0;
-const vol = new Volume();
+const vol = new memfs.Volume();
 var frameData = [];
 const cropKillfeedPOV = [1388, 36];
 const cropKillfeedSpectator = [1388, 170];
