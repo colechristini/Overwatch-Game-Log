@@ -191,7 +191,7 @@ async function getHeroes(frame, splitPoint, isHeadshot, isUlt) {
       var promiseLeft = image.getBufferAsync(Jimp.MIME_PNG);
       var promiseRight = victim.getBufferAsync(Jimp.MIME_PNG);
       promiseLeft.then(function (result) {
-        const imageMatrix = new cv.Mat(result, 1080, 1920, cv.CV_8UC3);
+        const imageMatrix = new cv.Mat(result, 1920, 1080, cv.CV_8UC3);
         if (isHeadshot) {
           for (let index = 0; index < canHeadshotNormal; index++) {
             if (isUlt && heroes[index].canUlt || !isUlt) {
