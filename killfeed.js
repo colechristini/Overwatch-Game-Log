@@ -127,6 +127,9 @@ async function checkKillfeedArrows(framenumber) {
     });
     var content = [];
     content = await runOCR(killfeedFrames[i], point, isHeadshot, isUlt);
+    if(content[0]==null){
+      break;
+    }
     if (killCache.get(content[0] + "->" + content[1]) == null) {
       var heroesInKill = await getHeroes(killfeedFrames[i], point, isHeadshot, isUlt);
       var ability = await getAbilities(heroesInKill[0], killfeedFrames[i], isUlt);
