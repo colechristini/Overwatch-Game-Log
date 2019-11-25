@@ -34,18 +34,15 @@ vol.readFile("./frames/frame_" + framenumber + "_killfeed_" + i + image.getExten
   
 
   async function extractframes(path, isSpectatorParam) {
-    var data = [];
+    let data = [];
     isSpectator = isSpectatorParam;
-    var promise = util.promisify(ffmpeg.ffprobe(path));
-    promise.then((metadata) => {
-      vodDuration = metadata.format.duration;
-    });
+    let promise = util.promisify(ffmpeg.ffprobe(path));
+    metadata=await promise;
+    vodDuration = metadata.format.duration;
     vol.mkdir("./frames");
     for (let index = 0; index < vodDuration * 10; index++) {
-      var dataPromise = new Promise(extractFrame(myArgs[0], index));
-      dataPromise.then((content) => {
-        var frameText = content;
-      });
+      let dataPromise = new Promise(extractFrame(path, index));
+      let frameText=await dataPromise;
       for (let frameEntry = 0; frameEntry < frameText.length; frameEntry++) {
         data[index + frameEntry] = "[" + Math.floor(index / 600) + ":" + (index / 600) % 60 + ":" + (index % 10) * 100 + "]: " + frameText[frameEntry];//generate timestamp from framenumber and insert into array
       }
@@ -53,14 +50,14 @@ vol.readFile("./frames/frame_" + framenumber + "_killfeed_" + i + image.getExten
     return data;
   }
   async function extractFrame(path, framenumber) {
-    var ffstream = ffmpeg(path)
+    let ffstream = ffmpeg(path)
       .setStartTime((framenumber % 10) + (60 * (framenumber - framenumber % 10)))
       .frames(1)
       .format("png")
       .stream(frame.stream)
       .withInputOption("-i")
       .pipe();
-    var data = [];
+    let data = [];
     ffstream.on("data", function (chunk) {
       this.data.push(chunk);
     });
@@ -68,12 +65,12 @@ vol.readFile("./frames/frame_" + framenumber + "_killfeed_" + i + image.getExten
       var frame = Buffer.concat(array);
     });
 
-    var frameText = await cropFrame(myArgs[2], frame, framenumber).then(checkKillfeedArrows(framenumber));
+    let frameText = await cropFrame(myArgs[2], frame, framenumber).then(checkKillfeedArrows(framenumber));
     return frameText;
   }
 
   async function cropFrame(buffer, framenumber) {
-    var crop = [];
+    let crop = [];
     vol.mkdir("./frames/frame_" + framenumber);
     if (isSpectator == true) {
       crop = cropSpectator;
@@ -86,19 +83,19 @@ vol.readFile("./frames/frame_" + framenumber + "_killfeed_" + i + image.getExten
         if (isSpectator == true) {
           //var ults = image.clone();
           //ults.crop(0, 0, 1920, cropUltsSpectator)
-          var file = "./frames/frame_" + framenumber + "_ults" + image.getExtension();
-          var promise = killfeed[i].getBufferAsync(Jimp.MIME_PNG);
-          promise.then(function (result) {
+          let file = "./frames/frame_" + framenumber + "_ults" + image.getExtension();
+          let promise = killfeed[i].getBufferAsync(Jimp.MIME_PNG);
+          promise.then(async function (result) {
             vol.writeFileAsync(file, result)
           });
         }
         image.crop(crop[0], crop[1], crop[0] + cropKillfeedDimensions[0], crop[1] + cropKillfeedDimensions[1]);
-        var killfeed = [];
+        let killfeed = [];
         for (let index = 0; index < 6; index++) {
           killfeed[i] = image.clone().crop(crop[0], crop[1] + Math.floor(i * cropKillfeedDimensions[1] / 6), cropKillfeedDimensions[0], Math.floor(i * cropKillfeedDimensions[1] / 6));
-          var file = "./frames/frame_" + framenumber + "_killfeed_" + i + image.getExtension();
-          var promise = killfeed[i].getBufferAsync(Jimp.MIME_PNG);
-          promise.then(function (result) {
+          let file = "./frames/frame_" + framenumber + "_killfeed_" + i + image.getExtension();
+          let promise = killfeed[i].getBufferAsync(Jimp.MIME_PNG);
+          promise.then(async function (result) {
             vol.writeFileAsync(file, result)
           });
         }
@@ -108,10 +105,10 @@ vol.readFile("./frames/frame_" + framenumber + "_killfeed_" + i + image.getExten
       });
   }
   async function checkKillfeedArrows(framenumber) {
-    var killfeedFrames = [];
-    var frameText = new String[6];
-    var isHeadshot = false;
-    var isUlt = false;
+    let killfeedFrames = [];
+    let frameText = new String[6];
+    let isHeadshot = false;
+    let isUlt = false;
     for (let index = 0; index < 6; index++) {
       vol.readFile("./frames/frame_" + framenumber + "_killfeed_" + i + image.getExtension(), (err, data) => {
         if (err) throw err;
@@ -198,7 +195,7 @@ vol.readFile("./frames/frame_" + framenumber + "_killfeed_" + i + image.getExten
         victim.crop(splitPoint[0], 0, image.bitmap.width - splitPoint[0], image.bitmap.height);
         var promiseLeft = image.getBufferAsync(Jimp.MIME_PNG);
         var promiseRight = victim.getBufferAsync(Jimp.MIME_PNG);
-        promiseLeft.then(function (result) {
+        promiseLeft.then(async function (result) {
           const imageMatrix = new cv.Mat(result, 1920, 1080, cv.CV_8UC3);
           if (isHeadshot) {
             for (let index = 0; index < canHeadshotNormal; index++) {
@@ -268,7 +265,7 @@ vol.readFile("./frames/frame_" + framenumber + "_killfeed_" + i + image.getExten
             }
           }
         });
-        promiseRight.then(function (result) {
+        promiseRight.then(async function (result) {
           const imageMatrix = new cv.Mat(result, 1080, 1920, cv.CV_8UC3);
           var templateMat;
           var maskMat;
@@ -303,7 +300,7 @@ vol.readFile("./frames/frame_" + framenumber + "_killfeed_" + i + image.getExten
       .then(image => {
         image.crop(0, 0, splitPoint[0], image.bitmap.height);
         var promise = image.getBufferAsync(Jimp.MIME_PNG);
-        promise.then(function (result) {
+        promise.then(async function (result) {
           const imageMatrix = new cv.Mat(result, 1080, 1920, cv.CV_8UC3);
           const heroIndex = heroes.findIndex(({ name }) => name === hero);
           var templateMat;
