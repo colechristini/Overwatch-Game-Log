@@ -105,47 +105,6 @@ async function cropFrame(buffer, framenumber) {
     });
 }
 async function checkKillfeedArrows(framenumber) {
-  let killfeedFrames = [];
-  let frameText = new String[6];
-  let isHeadshot = false;
-  let isUlt = false;
-  for (let index = 0; index < 6; index++) {
-    vol.readFile("./frames/frame_" + framenumber + "_killfeed_" + i + image.getExtension(), (err, data) => {
-      if (err) throw err;
-      killfeedFrames[index] = data;
-      const imageMatrix = new cv.Mat(data, 1080, 1920, cv.CV_8UC3);
-      killArrows.forEach(element => {
-        const matched = imageMatrix.matchTemplate(element, 5);
-        const point = matched.minMaxLoc();
-        if (point[1] > 0.8) {
-          if (element == killArrows[0]) {
-            isUlt = false;
-          }
-          else {
-            isUlt = true;
-          }
-          if (imageMatrix[point[2], point[3]] == colors[1]) {
-            isHeadshot = true;
-          }
-          else {
-            isHeadshot = false;
-          }
-        }
-      });
-    });
-    image.crop(crop[0], crop[1], crop[0] + cropKillfeedDimensions[0], crop[1] + cropKillfeedDimensions[1]);
-    var killfeed = [];
-    for (let index = 0; index < 6; index++) {
-      killfeed[i] = image.clone().crop(crop[0], crop[1] + Math.floor(i * cropKillfeedDimensions[1] / 6), cropKillfeedDimensions[0], Math.floor(i * cropKillfeedDimensions[1] / 6));
-      var file = "./frames/frame_" + framenumber + "_killfeed_" + i + image.getExtension();
-      var promise = killfeed[i].getBufferAsync(Jimp.MIME_PNG);
-      promise.then(function (result) {
-        vol.writeFileAsync(file, result)
-      });
-    }
-  }
-}
-async function checkKillfeedArrows(framenumber) {
   var killfeedFrames = [];
   var frameText = new String[6];
   var isHeadshot = false;
@@ -334,47 +293,6 @@ async function getHeroes(frame, splitPoint, isHeadshot, isUlt) {
   var ability = await getAbilities(basicText[0], frame, isUlt);
   basicText[0] += "[" + ability + "]";
   return basicText;
-}
-async function getAbilities(hero, frame, isUlt) {
-  var basicText = new String;
-  Jimp.read(frame)
-    .then(image => {
-      image.crop(0, 0, splitPoint[0], image.bitmap.height);
-      var promise = image.getBufferAsync(Jimp.MIME_PNG);
-      promise.then(async function (result) {
-        const imageMatrix = new cv.Mat(result, 1080, 1920, cv.CV_8UC3);
-        const heroIndex = heroes.findIndex(({ name }) => name === hero);
-        var templateMat;
-        var maskMat;
-        if (isUlt) {
-          basicText = "[" + heroes[heroIndex].abilities.Ultimate.name + "]";
-        }
-        else {
-          for (var ability in heroes[heroIndex].abilities) {
-            if (!heroes[heroIndex].ability.fileLoaded) {
-              templateMat = await cv.imreadAsync("./resources/" + hero + "/" + heroes[heroIndex].abilities[ability].icon);
-              maskMat = await cv.imreadAsync("./resources/" + heroes[index].name + "/mask_" + heroes[heroIndex].abilities[ability].icon);
-              heroes[heroIndex].abilities[ability].fileLoaded = true;
-              heroes[heroIndex].abilities[ability].icon = templateMat;
-              heroes[heroIndex].abilities[ability].mask = maskMat;
-            }
-            else {
-              templateMat = heroes[heroIndex].abilities[ability].icon;
-              maskMat = heroes[heroIndex].abilities[ability].mask;
-            }
-            const matched = imageMatrix.matchTemplate(templateMat, 5, mask = maskMat);
-            const point = matched.minMaxLoc();
-            if (point[1] > 0.8) {
-              basicText = "[" + heroes[heroIndex].abilities[ability].name + "]";
-              break;
-            }
-          }
-          var ability = await getAbilities(basicText[0], frame, isUlt);
-          basicText[0] += "[" + ability + "]";
-          return basicText;
-        }
-      });
-    });
 }
 
 async function getAbilities(hero, frame, isUlt) {
