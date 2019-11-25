@@ -55,7 +55,7 @@ async function extractFrame(path, framenumber) {
     .frames(1)
     .format("png")
     .stream(frame.stream)
-    .withInputOption("-i")
+    .withInputOption("-r")
     .pipe();
   let data = [];
   ffstream.on("data", function (chunk) {
