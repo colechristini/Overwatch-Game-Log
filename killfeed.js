@@ -1,5 +1,5 @@
 const fs = require("fs");
-const util = requite("util");
+const util = require("util");
 const memfs = require("memfs");
 const Tesseract = require("tesseract.js")
 const ffmpeg = require("fluent-ffmpeg");
@@ -192,8 +192,8 @@ async function getHeroes(frame, splitPoint, isHeadshot, isUlt) {
         if (isHeadshot) {
           for (let index = 0; index < canHeadshotNormal; index++) {
             if (isUlt && heroes[index].canUlt || !isUlt) {
-              var templateMat;
-              var maskMat;
+              let templateMat;
+              let maskMat;
               if (!heroes[index].fileLoaded) {
                 templateMat = await cv.imreadAsync("./resources/" + heroes[index].name + "/" + heroes[index].icon);
                 maskMat = await cv.imreadAsync("./resources/" + heroes[index].name + "/mask_" + heroes[index].icon);
@@ -202,7 +202,8 @@ async function getHeroes(frame, splitPoint, isHeadshot, isUlt) {
                 heroes[index].mask = maskMat;
               }
               else {
-                var templateMat = heroes[index].icon;
+                templateMat = heroes[index].icon;
+                maskMat = heroes[index].mask;
               }
               const matched = imageMatrix.matchTemplate(templateMat, 5, mask = maskMat);
               const point = matched.minMaxLoc();
@@ -224,8 +225,8 @@ async function getHeroes(frame, splitPoint, isHeadshot, isUlt) {
         }
         else {
           for (let index = 0; index < canHeadshotNormal; index++) {
-            var templateMat;
-            var maskMat
+            let templateMat;
+            let maskMat
             if (isUlt && heroes[index].canUlt || !isUlt) {
               if (!heroes[index].fileLoaded) {
                 templateMat = await cv.imreadAsync("./resources/" + heroes[index].name + "/" + heroes[index].icon);
