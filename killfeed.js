@@ -1,5 +1,5 @@
 const fs = require("fs");
-const util = requite("util");
+const util = require("util");
 const memfs = require("memfs");
 const Tesseract = require("tesseract.js")
 const ffmpeg = require("fluent-ffmpeg");
