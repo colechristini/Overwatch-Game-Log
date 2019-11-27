@@ -26,7 +26,7 @@ var isSpectator = false;
 
 var dataPromise = util.promisify(extractFrames(myArgs[0], myArgs[2]));
 dataPromise.then((result) => {
-  frameData = Array.from(new Set(result));
+  frameData = [...new Set(result)];
   var file = fs.createWriteStream(myArgs[1]);
   file.on('error', function (err) { throw err; });
   frameData.forEach(function (data) { file.write(data + '\n'); });

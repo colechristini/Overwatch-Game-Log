@@ -19,7 +19,7 @@
     "memfs": "^2.16.1",
     "mocha": "^6.2.2",
     "node-cache": "^5.0.2",
-    "opencv4nodejs": "^5.4.0",
+    "opencv4nodejs": "^5.5.0",
     "tesseract.js": "^2.0.0-beta.2"
   }
 }
