@@ -7,7 +7,7 @@ const Jimp = require("jimp");
 const cv = require("opencv4nodejs");
 const NodeCache = require("node-cache");
 const myArgs = process.argv.slice(2);
-const vodDuration = 0;
+var vodDuration = 0;
 const vol = new memfs.Volume();
 var frameData = [];
 const cropKillfeedPOV = [1388, 36];
@@ -42,7 +42,7 @@ async function extractframes(path, isSpectatorParam) {
   vodDuration = metadata.format.duration;
   vol.mkdir("./frames");
   for (let index = 0; index < vodDuration * 10; index++) {
-    let dataPromise = new Promise(extractFrame(path, index));
+    let dataPromise = extractFrame(path, index);
     let frameText = await dataPromise;
     for (let frameEntry = 0; frameEntry < frameText.length; frameEntry++) {
       data[index + frameEntry] = "[" + Math.floor(index / 600) + ":" + (index / 600) % 60 + ":" + (index % 10) * 100 + "]: " + frameText[frameEntry];//generate timestamp from framenumber and insert into array
@@ -50,6 +50,7 @@ async function extractframes(path, isSpectatorParam) {
   }
 }
 async function extractFrame(path, framenumber) {
+  var frame;
   let ffstream = ffmpeg(path)
     .setStartTime((framenumber % 10) + (60 * (framenumber - framenumber % 10)))
     .frames(1)
@@ -62,10 +63,10 @@ async function extractFrame(path, framenumber) {
     this.data.push(chunk);
   });
   ffstream.on("finished", function () {
-    var frame = Buffer.concat(array);
+    frame = Buffer.concat(array);
   });
 
-  let frameText = await cropFrame(myArgs[2], frame, framenumber).then(checkKillfeedArrows(framenumber));
+  let frameText = await cropFrame(frame, framenumber).then(checkKillfeedArrows(framenumber));
   return frameText;
 }
 
@@ -80,15 +81,6 @@ async function cropFrame(buffer, framenumber) {
   }
   Jimp.read(buffer)
     .then(image => {
-      if (isSpectator == true) {
-        //var ults = image.clone();
-        //ults.crop(0, 0, 1920, cropUltsSpectator)
-        let file = "./frames/frame_" + framenumber + "_ults" + image.getExtension();
-        let promise = killfeed[i].getBufferAsync(Jimp.MIME_PNG);
-        promise.then(async function (result) {
-          vol.writeFileAsync(file, result)
-        });
-      }
       image.crop(crop[0], crop[1], crop[0] + cropKillfeedDimensions[0], crop[1] + cropKillfeedDimensions[1]);
       let killfeed = [];
       for (let index = 0; index < 6; index++) {
@@ -124,7 +116,7 @@ async function checkKillfeedArrows(framenumber) {
           else {
             isUlt = true;
           }
-          if (imageMatrix[point[2], point[3]] == colors[1]) {
+          if (imageMatrix.atBGR(point[2], point[3]) == colors[1]) {
             isHeadshot = true;
           }
           else {
@@ -142,7 +134,7 @@ async function checkKillfeedArrows(framenumber) {
       var heroesInKill = await getHeroes(killfeedFrames[i], point, isHeadshot, isUlt);
       var ability = await getAbilities(heroesInKill[0], killfeedFrames[i], isUlt);
       if (ability == "Resurrection") {
-        for (key in killCache.keys()) {
+        for (let key in killCache.keys()) {
           if (key.includes(userNames[1])) {
             killCache.del(key);
             break;
@@ -200,8 +192,8 @@ async function getHeroes(frame, splitPoint, isHeadshot, isUlt) {
         if (isHeadshot) {
           for (let index = 0; index < canHeadshotNormal; index++) {
             if (isUlt && heroes[index].canUlt || !isUlt) {
-              var templateMat;
-              var maskMat;
+              let templateMat;
+              let maskMat;
               if (!heroes[index].fileLoaded) {
                 templateMat = await cv.imreadAsync("./resources/" + heroes[index].name + "/" + heroes[index].icon);
                 maskMat = await cv.imreadAsync("./resources/" + heroes[index].name + "/mask_" + heroes[index].icon);
@@ -210,16 +202,17 @@ async function getHeroes(frame, splitPoint, isHeadshot, isUlt) {
                 heroes[index].mask = maskMat;
               }
               else {
-                var templateMat = heroes[index].icon;
+                templateMat = heroes[index].icon;
+                maskMat = heroes[index].mask;
               }
               const matched = imageMatrix.matchTemplate(templateMat, 5, mask = maskMat);
               const point = matched.minMaxLoc();
               if (point[1] > 0.8) {
                 basicText = "[" + heroes[index].name + "]";
-                if (imageMatrix.at(point[0] + iconWidth + 1, point[1]) == teamColors[0]) {
+                if (imageMatrix.atBGR(point[0] + iconWidth + 1, point[1]) == teamColors[0]) {
                   basicText[0].replace("]", "][Team 1]")
                 }
-                else if (imageMatrix.at(point[0] + iconWidth + 1, point[1]) == teamColors[1]) {
+                else if (imageMatrix.atBGR(point[0] + iconWidth + 1, point[1]) == teamColors[1]) {
                   basicText[0].replace("]", "][Team 2]");
                 }
                 break;
@@ -232,8 +225,8 @@ async function getHeroes(frame, splitPoint, isHeadshot, isUlt) {
         }
         else {
           for (let index = 0; index < canHeadshotNormal; index++) {
-            var templateMat;
-            var maskMat
+            let templateMat;
+            let maskMat
             if (isUlt && heroes[index].canUlt || !isUlt) {
               if (!heroes[index].fileLoaded) {
                 templateMat = await cv.imreadAsync("./resources/" + heroes[index].name + "/" + heroes[index].icon);
@@ -250,10 +243,10 @@ async function getHeroes(frame, splitPoint, isHeadshot, isUlt) {
               const point = matched.minMaxLoc();
               if (point[1] > 0.8) {
                 basicText[1] = "[" + heroes[index].name + "]";
-                if (imageMatrix.at(point[0] + iconWidth + 1, point[1]) == teamColors[0]) {
+                if (imageMatrix.atBGR(point[0] + iconWidth + 1, point[1]) == teamColors[0]) {
                   basicText[1].replace("]", "][Team 1]")
                 }
-                else if (imageMatrix.at(point[0] + iconWidth + 1, point[1]) == teamColors[1]) {
+                else if (imageMatrix.atBGR(point[0] + iconWidth + 1, point[1]) == teamColors[1]) {
                   basicText[1].replace("]", "][Team 2]");
                 }
                 break;
