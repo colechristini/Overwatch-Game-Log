@@ -11,6 +11,16 @@
 					"icon": "missiles.png",
 					"fileLoaded": false
 				},
+				"Ability 2": {
+					"name": "Boosters",
+					"icon": "boosters.png",
+					"fileLoaded": false
+				},
+				"Ability 3": {
+					"name": "Call Mech",
+					"icon": "mech.png",
+					"fileLoaded": false
+				},
 				"Ultimate": {
 					"name": "Self Destruct",
 					"icon": "bomb.png",
@@ -233,7 +243,7 @@
 			}
 		},
 		{
-			"name": "Soldier: 76",
+			"name": "Soldier 76",
 			"canHeadshot": true,
 			"canUlt": true,
 			"icon": "soldier.png",
@@ -267,7 +277,7 @@
 			"fileLoaded": false,
 			"abilities": {
 				"Ability 1": {
-					"name": "Hammer",
+					"name": "Forgehammer",
 					"icon": "hammer.png",
 					"fileLoaded": false
 				},
@@ -440,7 +450,12 @@
 			"abilities": {
 				"Ability 1": {
 					"name": "Concussion Mine",
-					"icon": "mine.png",
+					"icon": "concmine.png",
+					"fileLoaded": false
+				},
+				"Ability 2": {
+					"name": "Steel Trap",
+					"icon": "trap.png",
 					"fileLoaded": false
 				},
 				"Ultimate": {
