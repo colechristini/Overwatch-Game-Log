@@ -299,7 +299,6 @@ async function getAbilities(hero, frame, isUlt) {
           const point = matched.minMaxLoc();
           if (point[1] > 0.8) {
             basicText = "[Quick Melee]";
-            break;
           }
           else {
             for (var ability in heroes[heroIndex].abilities) {
