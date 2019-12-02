@@ -2,7 +2,7 @@
 var killfeed = require('../killfeed');
 var expect = require('chai').expect;
 
-describe('#extractFrames()', function() {
+describe('#extractFrames()', async function() {
 
 	context('1 kill occurs, headshot, non spectator', function() {
 		it('should return one kill with storm arrow headshot', async function() {
