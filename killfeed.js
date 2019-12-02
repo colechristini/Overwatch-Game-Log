@@ -30,7 +30,7 @@ const melee = cv.imread("./resources/global/melee.png");
     frameData = [...new Set(result)];
     var file = fs.createWriteStream(myArgs[1]);
     file.on('error', function (err) { throw err; });
-    for(entry in frameData){
+    for(let entry in frameData){
       file.write(entry + '\n');
     }
     file.end();
