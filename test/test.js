@@ -12,7 +12,7 @@ describe('#extractFrames()', function() {
 
 			// add some assertions
 			expect(data)
-				.to.be.a('array').and.to.have.members(['[0:0:0]: EventHorizon[Hanzo][Storm Arrows][headshot:true][ult:false]->Nope3[Hanzo]', '[0:0:500] ']);;
+				.to.be.a('array').and.to.have.members(['NOVA[Hanzo][Storm Arrows][headshot:true][ult:false]->BIPOLAR[Hanzo]', '[0:0:500] ']);;
 		})
 
 	})
@@ -26,7 +26,7 @@ describe('#extractFrames()', function() {
 
 				// add some assertions
 				expect(data)
-					.to.be.a('array').and.to.have.members(['[0:0:0]: Secret[Tracer][Blue][Melee][headshot:false][ult:false]->Nope3[Hanzo]', '[0:1:800]: Bentup[Mercy][Red[Resurrection][headshot:false][ult:false]->Nope3[Hanzo][Red]', '[0:5:200]: Secret[Tracer][Blue][Pulse Bomb][headshot:false][ult:true]->Nope3[Hanzo][Red]']);
+					.to.be.a('array').and.to.have.members(['NOVA[Hanzo][Blue][Melee][headshot:false][ult:false]->BIPOLAR[Hanzo]', 'KIWI[Mercy][Red[Resurrection][headshot:false][ult:false]->BIPOLAR[Hanzo][Red]', 'NOVA[Hanzo][Blue][Dragonstrike][headshot:false][ult:true]->BIPOLAR[Hanzo][Red]']);
 			})
 		})
 	})
