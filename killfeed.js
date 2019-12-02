@@ -46,8 +46,7 @@ async function extractFrames(path, isSpectatorParam) {
   vodDuration = metadata.format.duration;
   vol.mkdir("./frames");
   for (let index = 0; index < vodDuration * 10; index++) {
-    let dataPromise = extractFrame(path, index);
-    let frameText = await dataPromise;
+    let frameText = extractFrame(path, index);
     for (let frameEntry = 0; frameEntry < frameText.length; frameEntry++) {
       data[index + frameEntry] = "[" + Math.floor(index / 600) + ":" + (index / 600) % 60 + ":" + (index % 10) * 100 + "]: " + frameText[frameEntry];//generate timestamp from framenumber and insert into array
     }
