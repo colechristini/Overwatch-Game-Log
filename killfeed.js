@@ -24,16 +24,17 @@ const canHeadshotUlt = 2;
 var killCache = new NodeCache(stdTTL = 15, useClones = false);
 var isSpectator = false;
 const melee = cv.imread("./resources/global/melee.png");
+module.exports.extracteFrames = extractFrames;
 
 (async function () {
-    var result = await extractFrames(myArgs[0], myArgs[2]).catch((e) => { console.error(e.message) });
-    frameData = [...new Set(result)];
-    var file = fs.createWriteStream(myArgs[1]);
-    file.on('error', function (err) { throw err; });
-    for(let entry in frameData){
-      file.write(entry + '\n');
-    }
-    file.end();
+  var result = await extractFrames(myArgs[0], myArgs[2]).catch((e) => { console.error(e.message) });
+  frameData = [...new Set(result)];
+  var file = fs.createWriteStream(myArgs[1]);
+  file.on('error', function (err) { throw err; });
+  for (let entry in frameData) {
+    file.write(entry + '\n');
+  }
+  file.end();
 })();
 
 async function extractFrames(path, isSpectatorParam) {
