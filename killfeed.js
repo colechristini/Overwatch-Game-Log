@@ -24,7 +24,7 @@ const canHeadshotUlt = 2;
 var killCache = new NodeCache(stdTTL = 15, useClones = false);
 var isSpectator = false;
 const melee = cv.imread("./resources/global/melee.png");
-module.exports.extracteFrames = extractFrames;
+module.exports.extractFrames = extractFrames;
 
 (async function () {
   var result = await extractFrames(myArgs[0], myArgs[2]).catch((e) => { console.error(e.message) });
