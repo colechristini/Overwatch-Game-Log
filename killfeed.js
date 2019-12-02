@@ -25,28 +25,26 @@ var killCache = new NodeCache(stdTTL = 15, useClones = false);
 var isSpectator = false;
 const melee = cv.imread("./resources/global/melee.png");
 
-async function main() {
-  var dataPromise = await extractFrames(myArgs[0], myArgs[2]);
-  dataPromise.then((result) => {
+(async function () {
+    var result = await extractFrames(myArgs[0], myArgs[2]).catch((e) => { console.error(e.message) });
     frameData = [...new Set(result)];
     var file = fs.createWriteStream(myArgs[1]);
     file.on('error', function (err) { throw err; });
-    frameData.forEach(function (data) { file.write(data + '\n'); });
+    for(entry in frameData){
+      file.write(entry + '\n');
+    }
     file.end();
-  });
-}
-
-main();
+})();
 
 async function extractFrames(path, isSpectatorParam) {
   let data = [];
   isSpectator = isSpectatorParam;
   let promise = util.promisify(ffmpeg.ffprobe(path));
-  metadata = await promise;
+  metadata = await promise.catch((e) => { console.error(e.message) });
   vodDuration = metadata.format.duration;
   vol.mkdir("./frames");
   for (let index = 0; index < vodDuration * 10; index++) {
-    let frameText = extractFrame(path, index);
+    let frameText = await extractFrame(path, index).catch((e) => { console.error(e.message) });
     for (let frameEntry = 0; frameEntry < frameText.length; frameEntry++) {
       data[index + frameEntry] = "[" + Math.floor(index / 600) + ":" + (index / 600) % 60 + ":" + (index % 10) * 100 + "]: " + frameText[frameEntry];//generate timestamp from framenumber and insert into array
     }
@@ -69,7 +67,7 @@ async function extractFrame(path, framenumber) {
     frame = Buffer.concat(array);
   });
 
-  let frameText = await cropFrame(frame, framenumber).then(checkKillfeedArrows(framenumber));
+  let frameText = await cropFrame(frame, framenumber).then(checkKillfeedArrows(framenumber)).catch((e) => { console.error(e.message) });
   return frameText;
 }
 
@@ -129,13 +127,13 @@ async function checkKillfeedArrows(framenumber) {
       });
     });
     var content = [];
-    content = await runOCR(killfeedFrames[i], point, isHeadshot, isUlt);
+    content = await runOCR(killfeedFrames[i], point, isHeadshot, isUlt).catch((e) => { console.error(e.message) });
     if (content[0] == null || killCache.get(content[0] + "->" + content[1]) != null) {
       break;
     }
     if (killCache.get(content[0] + "->" + content[1]) == null) {
-      var heroesInKill = await getHeroes(killfeedFrames[i], point, isHeadshot, isUlt);
-      var ability = await getAbilities(heroesInKill[0], killfeedFrames[i], isUlt);
+      var heroesInKill = await getHeroes(killfeedFrames[i], point, isHeadshot, isUlt).catch((e) => { console.error(e.message) });
+      var ability = await getAbilities(heroesInKill[0], killfeedFrames[i], isUlt).catch((e) => { console.error(e.message) });
       if (ability == "Resurrection") {
         for (let key in killCache.keys()) {
           if (key.includes(userNames[1])) {
@@ -198,8 +196,8 @@ async function getHeroes(frame, splitPoint, isHeadshot, isUlt) {
               let templateMat;
 
               if (!heroes[index].fileLoaded) {
-                templateMat = await cv.imreadAsync("./resources/" + heroes[index].name + "/" + heroes[index].icon);
-                maskMat = await cv.imreadAsync("./resources/" + heroes[index].name + "/mask_" + heroes[index].icon);
+                templateMat = await cv.imreadAsync("./resources/" + heroes[index].name + "/" + heroes[index].icon).catch((e) => { console.error(e.message) });
+                maskMat = await cv.imreadAsync("./resources/" + heroes[index].name + "/mask_" + heroes[index].icon).catch((e) => { console.error(e.message) });
                 heroes[index].fileLoaded = true;
                 heroes[index].icon = templateMat;
               }
@@ -229,8 +227,8 @@ async function getHeroes(frame, splitPoint, isHeadshot, isUlt) {
             let templateMat;
             if (isUlt && heroes[index].canUlt || !isUlt) {
               if (!heroes[index].fileLoaded) {
-                templateMat = await cv.imreadAsync("./resources/" + heroes[index].name + "/" + heroes[index].icon);
-                maskMat = await cv.imreadAsync("./resources/" + heroes[index].name + "/mask_" + heroes[index].icon);
+                templateMat = await cv.imreadAsync("./resources/" + heroes[index].name + "/" + heroes[index].icon).catch((e) => { console.error(e.message) });
+                maskMat = await cv.imreadAsync("./resources/" + heroes[index].name + "/mask_" + heroes[index].icon).catch((e) => { console.error(e.message) });
                 heroes[index].fileLoaded = true;
                 heroes[index].icon = templateMat;
               }
@@ -261,8 +259,8 @@ async function getHeroes(frame, splitPoint, isHeadshot, isUlt) {
         let templateMat;
         for (let index = 0; index < heroes.length; index++) {
           if (!heroes[index].fileLoaded) {
-            templateMat = await cv.imreadAsync("./resources/" + heroes[index].name + "/" + heroes[index].icon);
-            maskMat = await cv.imreadAsync("./resources/" + heroes[index].name + "/mask_" + heroes[index].icon);
+            templateMat = await cv.imreadAsync("./resources/" + heroes[index].name + "/" + heroes[index].icon).catch((e) => { console.error(e.message) });
+            maskMat = await cv.imreadAsync("./resources/" + heroes[index].name + "/mask_" + heroes[index].icon).catch((e) => { console.error(e.message) });
             heroes[index].fileLoaded = true;
             heroes[index].icon = templateMat;
           }
@@ -278,7 +276,7 @@ async function getHeroes(frame, splitPoint, isHeadshot, isUlt) {
         }
       });
     });
-  var ability = await getAbilities(basicText[0], frame, isUlt);
+  var ability = await getAbilities(basicText[0], frame, isUlt).catch((e) => { console.error(e.message) });
   basicText[0] += "[" + ability + "]";
   return basicText;
 }
@@ -305,7 +303,7 @@ async function getAbilities(hero, frame, isUlt) {
           else {
             for (var ability in heroes[heroIndex].abilities) {
               if (!heroes[index].fileLoaded) {
-                templateMat = await cv.imreadAsync("./resources/" + heroes[index].name + "/" + heroes[index].icon);
+                templateMat = await cv.imreadAsync("./resources/" + heroes[index].name + "/" + heroes[index].ability.icon).catch((e) => { console.error(e.message) });
                 heroes[index].fileLoaded = true;
                 heroes[index].icon = templateMat;
               }
