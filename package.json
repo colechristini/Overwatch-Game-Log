@@ -16,7 +16,7 @@
     "ffbinaries": "^1.1.4",
     "fluent-ffmpeg": "^2.1.2",
     "jimp": "^0.8.5",
-    "memfs": "^2.16.1",
+    "memfs": "^2.17.1",
     "mocha": "^6.2.2",
     "node-cache": "^5.0.2",
     "opencv4nodejs": "^5.5.0",

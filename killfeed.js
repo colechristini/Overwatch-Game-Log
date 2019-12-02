@@ -25,7 +25,7 @@ var killCache = new NodeCache(stdTTL = 15, useClones = false);
 var isSpectator = false;
 const melee = cv.imread("./resources/global/melee.png");
 
-var dataPromise = util.promisify(extractFrames(myArgs[0], myArgs[2]));
+var dataPromise = extractFrames(myArgs[0], myArgs[2]);
 dataPromise.then((result) => {
   frameData = [...new Set(result)];
   var file = fs.createWriteStream(myArgs[1]);
