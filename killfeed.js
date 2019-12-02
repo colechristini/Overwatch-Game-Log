@@ -39,8 +39,9 @@ const melee = cv.imread("./resources/global/melee.png");
 async function extractFrames(path, isSpectatorParam) {
   let data = [];
   isSpectator = isSpectatorParam;
-  let promise = util.promisify(ffmpeg.ffprobe(path));
-  metadata = await promise.catch((e) => { console.error(e.message) });
+  const ffprobe = util.promisify(ffmpeg.ffprobe);
+  let promise = ffprobe(path);
+  let metadata = await promise.catch((e) => { console.error(e.message) });
   vodDuration = metadata.format.duration;
   vol.mkdir("./frames");
   for (let index = 0; index < vodDuration * 10; index++) {
