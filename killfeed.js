@@ -18,7 +18,7 @@ const killArrows = [cv.imread("./resources/arrows/arrow_normal.png"), cv.imread(
 const arrowColors = [0xFFFFFF, 0x240AFE];
 const iconWidth = 25;
 const teamColors = [0xD1BF80, 0x6E72F9];
-var heroes = JSON.parse(fs.readFileSync("./heroes.json", "utf8"));
+var heroes = JSON.parse(fs.readFileSync("./resources/heroes.json", "utf8"));
 const canHeadshotNormal = 21;
 const canHeadshotUlt = 2;
 var killCache = new NodeCache(stdTTL = 15, useClones = false);
