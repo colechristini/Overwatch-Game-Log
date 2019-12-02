@@ -25,15 +25,18 @@ var killCache = new NodeCache(stdTTL = 15, useClones = false);
 var isSpectator = false;
 const melee = cv.imread("./resources/global/melee.png");
 
-var dataPromise = extractFrames(myArgs[0], myArgs[2]);
-dataPromise.then((result) => {
-  frameData = [...new Set(result)];
-  var file = fs.createWriteStream(myArgs[1]);
-  file.on('error', function (err) { throw err; });
-  frameData.forEach(function (data) { file.write(data + '\n'); });
-  file.end();
-});
+async function main() {
+  var dataPromise = await extractFrames(myArgs[0], myArgs[2]);
+  dataPromise.then((result) => {
+    frameData = [...new Set(result)];
+    var file = fs.createWriteStream(myArgs[1]);
+    file.on('error', function (err) { throw err; });
+    frameData.forEach(function (data) { file.write(data + '\n'); });
+    file.end();
+  });
+}
 
+main();
 
 async function extractFrames(path, isSpectatorParam) {
   let data = [];
@@ -53,7 +56,7 @@ async function extractFrames(path, isSpectatorParam) {
 async function extractFrame(path, framenumber) {
   var frame;
   let ffstream = ffmpeg(path)
-    .setStartTime(framenumber*10)
+    .setStartTime(framenumber * 10)
     .frames(1)
     .format("png")
     .stream(frame.stream)
