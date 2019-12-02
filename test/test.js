@@ -1,5 +1,5 @@
 
-var killfeed = require('../killfeed');
+var killfeed = require('../killfeed.js');
 var expect = require('chai').expect;
 
 describe('#extractFrames()', async function() {
