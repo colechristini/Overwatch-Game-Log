@@ -14,7 +14,7 @@ const cropKillfeedPOV = [1388, 36];
 const cropKillfeedSpectator = [1388, 170];
 const cropKillfeedDimensions = [500, 310];
 const cropUltsSpectator = 160;
-const killArrows = [cv.imread("./resources/arrows/arrow_normal.png"), cv.imread("./resources/arrows/arrow_ult.png")];
+const killArrows = [cv.imread("./resources/Arrows/arrow_normal.png"), cv.imread("./resources/Arrows/arrow_ult.png")];
 const arrowColors = [0xFFFFFF, 0x240AFE];
 const iconWidth = 25;
 const teamColors = [0xD1BF80, 0x6E72F9];
@@ -35,7 +35,7 @@ dataPromise.then((result) => {
 });
 
 
-async function extractframes(path, isSpectatorParam) {
+async function extractFrames(path, isSpectatorParam) {
   let data = [];
   isSpectator = isSpectatorParam;
   let promise = util.promisify(ffmpeg.ffprobe(path));
