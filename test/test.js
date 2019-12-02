@@ -8,7 +8,7 @@ describe('#extractFrames()', async function() {
 		it('should return one kill with storm arrow headshot', async function() {
 
 			// use await to wait until the promise is fulfilled
-			let data = await extractFrames("../resources/test/test_1.mp4", false);
+			let data = await extractFrames("../resources/test/test_1.mp4", false) .catch(error => console.log(error));
 
 			// add some assertions
 			expect(data)
@@ -22,7 +22,7 @@ describe('#extractFrames()', async function() {
 			it('should return one kill with melee, a resurrection, and tracer pulse bombing hanzo', async function() {
 
 				// use await to wait until the promise is fulfilled
-				let data = await extractFrames("../resources/test/test_2.mp4", true);
+				let data = await extractFrames("../resources/test/test_2.mp4", true) .catch(error => console.log(error));
 
 				// add some assertions
 				expect(data)
