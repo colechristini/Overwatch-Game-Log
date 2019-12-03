@@ -13,14 +13,13 @@ var frameData = [];
 const cropKillfeedPOV = [1388, 36];
 const cropKillfeedSpectator = [1388, 170];
 const cropKillfeedDimensions = [500, 310];
-const cropUltsSpectator = 160;
+//const cropUltsSpectator = 160;
 const killArrows = [cv.imread("./resources/Arrows/arrow_normal.png"), cv.imread("./resources/Arrows/arrow_ult.png")];
 const arrowColors = [0xFFFFFF, 0x240AFE];
 const iconWidth = 25;
 const teamColors = [0xD1BF80, 0x6E72F9];
 var heroes = JSON.parse(fs.readFileSync("./resources/heroes.json", "utf8"));
 const canHeadshotNormal = 21;
-const canHeadshotUlt = 2;
 var killCache = new NodeCache(stdTTL = 15, useClones = false);
 var isSpectator = false;
 const melee = cv.imread("./resources/global/melee.png");
@@ -31,7 +30,7 @@ module.exports = extractFrames;
   frameData = [...new Set(result)];
   var file = fs.createWriteStream(myArgs[1]);
   file.on('error', function (err) { throw err; });
-  for (let entry in frameData) {
+  for (let entry of frameData) {
     file.write(entry + '\n');
   }
   file.end();
@@ -77,10 +76,10 @@ async function cropFrame(buffer, framenumber) {
   let crop = [];
   vol.mkdir("./frames/frame_" + framenumber);
   if (isSpectator == true) {
-    crop = cropSpectator;
+    crop = cropKillfeedSpectator;
   }
   else {
-    crop = cropPOV;
+    crop = cropKillfeedPOV;
   }
   Jimp.read(buffer)
     .then(image => {
@@ -119,7 +118,7 @@ async function checkKillfeedArrows(framenumber) {
           else {
             isUlt = true;
           }
-          if (imageMatrix.atBGR(point[2], point[3]) == colors[1]) {
+          if (imageMatrix.atBGR(point[2], point[3]) == arrowColors[1]) {
             isHeadshot = true;
           }
           else {
